@@ -3,16 +3,22 @@ module.exports = function(app) {
 var express = require('express');
 var todoList = require('../controller/appControllerDrive.js');
 
-app.post('/drivivounet/login',function(req,res){
+app.post('/drivinounet/login',function(req,res){
 		todoList.get_auth(req,res);	
 	});
-app.get('/drivivounet/file/:name',function(req,res){
+app.get('/drivinounet/file',function(req,res){
 		todoList.get_a_file(req,res);	
 	});
-app.get('/drivivounet/liste',function(req,res){
+app.get('/drivinounet/liste',function(req,res){
 		todoList.get_files(req,res);	
 	});
-app.post('/drivivounet/put',function(req,res){
+app.put('/drivinounet/file',function(req,res){
 		todoList.place_a_file(req,res);	
+	});
+app.delete('/drivinounet/file/:name',function(req,res){
+		todoList.delete_a_file(req,res);
+	});
+app.get('/drivinounet/mv',function(req,res){
+		todoList.mv_a_file(req,res);	
 	});
 }

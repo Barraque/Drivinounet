@@ -25,7 +25,6 @@ function verifyToken(req,res){
 	const bearer = req.headers['authorization'];
 	if(typeof bearer !== 'undifined'){
 		const bearerToken = bearer.split(' ')[2];
-		console.log(bearerToken);
 		req.token = bearerToken;	
 		return (jwt.verify(req.token,secretkey,(err,data) => {
 			if(err){
@@ -40,7 +39,6 @@ function verifyToken(req,res){
 }
 Controller.place_a_file = function(req,res) {
 	if(verifyToken(req,res)){
-		console.log(Drive.uploadfile);
 		Drive.uploadfile(req,function(err,file){
 			if (err){
 				console.log(err);
@@ -48,7 +46,7 @@ Controller.place_a_file = function(req,res) {
 				res.send(err);
 			}
 			else{
-				console.log(file);
+				console.log("file added");
 				res.status(200);
 				res.send(file)
 			}
@@ -80,7 +78,7 @@ Controller.get_files = function(req,res){
 }
 Controller.get_a_file = function(req,res){
 	if(verifyToken(req,res)){
-		Drive.getafile(res,req.params.name,(err,file)=>{
+		Drive.getafile(res,req.body.newpath,(err,file)=>{
 			if(err){
 				console.log(err);
 				res.status(400);
@@ -88,6 +86,42 @@ Controller.get_a_file = function(req,res){
 			}
 			else{
 				console.log(file);
+			}
+		});
+	}
+	else{
+		res.sendStatus(403);
+	}	
+}
+Controller.delete_a_file = function(req,res){
+	if(verifyToken(req,res)){
+		Drive.deleteafile(req.body.newpath,(err,file)=>{
+			if(err){
+				console.log(err);
+				res.status(400);
+				res.send(err);
+			}
+			else{
+				console.log(file);
+				res.send(file);
+			}
+		});
+	}
+	else{
+		res.sendStatus(403);
+	}	
+}
+Controller.mv_a_file = function(req,res){
+	if(verifyToken(req,res)){
+		Drive.moveafile(req.body.old,req.body.new,(err,file)=>{
+			if(err){
+				console.log(err);
+				res.status(400);
+				res.send(err);
+			}
+			else{
+				console.log(file);
+				res.send(file);
 			}
 		});
 	}
