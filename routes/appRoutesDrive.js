@@ -15,8 +15,11 @@ app.get('/drivinounet/liste',function(req,res){
 app.put('/drivinounet/file',function(req,res){
 		todoList.place_a_file(req,res);	
 	});
-app.delete('/drivinounet/file/:name',function(req,res){
+app.delete('/drivinounet/file',function(req,res){
 		todoList.delete_a_file(req,res);
+	});
+app.put('/drivinounet/mkdir',function(req,res){
+		todoList.create_a_dir(req,res);	
 	});
 app.get('/drivinounet/mv',function(req,res){
 		todoList.mv_a_file(req,res);	

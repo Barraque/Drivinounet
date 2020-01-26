@@ -6,7 +6,7 @@ const secretkey = "secretkey";
 
 Controller.get_auth = function(req,res){
 	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py","SECRETBASED32"]);
+	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py","SECRETKEYBASED32"]);
 	pythonProcess.stdout.on('data',(passwd) => {
 		if(req.body.passwd.toString() == JSON.parse(passwd)){
 			jwt.sign({passwd},secretkey,{expiresIn:'5m'},(err,token) => {
@@ -23,7 +23,7 @@ Controller.get_auth = function(req,res){
 };
 function verifyToken(req,res){
 	const bearer = req.headers['authorization'];
-	if(typeof bearer !== 'undifined'){
+	if(typeof bearer !== 'undifined' && bearer != null){
 		const bearerToken = bearer.split(' ')[2];
 		req.token = bearerToken;	
 		return (jwt.verify(req.token,secretkey,(err,data) => {
@@ -37,93 +37,62 @@ function verifyToken(req,res){
 		return false;
 	}
 }
+var resultat = function(res,err,stat,msg){
+	if (err){
+		console.log(err);
+		res.status(stat);
+		res.send(err);
+	}
+	else{
+		console.log(msg);
+		res.status(stat);
+		res.send(msg)
+	}
+};
+
 Controller.place_a_file = function(req,res) {
 	if(verifyToken(req,res)){
-		Drive.uploadfile(req,function(err,file){
-			if (err){
-				console.log(err);
-				res.status(400);
-				res.send(err);
-			}
-			else{
-				console.log("file added");
-				res.status(200);
-				res.send(file)
-			}
-		});
-
+		Drive.uploadfile(req,res,resultat);
 	}
 	else {
 		res.sendStatus(403);
 	}
 };
 Controller.get_files = function(req,res){
-	if(verifyToken(req,res)){
-		Drive.getlistoffiles(function(err,liste){
-			if(err){
-				console.log(err);
-				res.status(500);
-				res.send(err);
-			}
-			else{
-				console.log(liste);
-				res.status(200);
-				res.send(liste);
-			}
-		});
+	if(verifyToken(req,res) && req.body.path != null){
+		Drive.getlistoffiles(req.body.path,res,resultat);
 	}
 	else{
 		res.sendStatus(403);
 	}	
 }
 Controller.get_a_file = function(req,res){
-	if(verifyToken(req,res)){
-		Drive.getafile(res,req.body.newpath,(err,file)=>{
-			if(err){
-				console.log(err);
-				res.status(400);
-				res.send(err);
-			}
-			else{
-				console.log(file);
-			}
-		});
+	if(verifyToken(req,res)&& req.body.path != null){
+		Drive.getafile(res,req.body.path,resultat);
 	}
 	else{
 		res.sendStatus(403);
 	}	
 }
 Controller.delete_a_file = function(req,res){
-	if(verifyToken(req,res)){
-		Drive.deleteafile(req.body.newpath,(err,file)=>{
-			if(err){
-				console.log(err);
-				res.status(400);
-				res.send(err);
-			}
-			else{
-				console.log(file);
-				res.send(file);
-			}
-		});
+	if(verifyToken(req,res)&& req.body.path != null){
+		Drive.deleteafile(req.body.path,res,resultat);
 	}
 	else{
 		res.sendStatus(403);
 	}	
 }
 Controller.mv_a_file = function(req,res){
-	if(verifyToken(req,res)){
-		Drive.moveafile(req.body.old,req.body.new,(err,file)=>{
-			if(err){
-				console.log(err);
-				res.status(400);
-				res.send(err);
-			}
-			else{
-				console.log(file);
-				res.send(file);
-			}
-		});
+	if(verifyToken(req,res) && req.body.old != null && req.body.new != null){
+		Drive.moveafile(req.body.old,req.body.new,res,resultat);
+	}
+	else{
+		res.sendStatus(403);
+	}	
+}
+Controller.create_a_dir = function(req,res){
+	if(verifyToken(req,res) && req.body.path != null){
+		Drive.createdir(req.body.path,res,resultat);
 	}
 	else{
 		res.sendStatus(403);
