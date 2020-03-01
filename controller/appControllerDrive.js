@@ -2,16 +2,18 @@
 var Drive = require('../model/DriveappModel.js');
 var jwt = require('jsonwebtoken');
 var Controller = {};
-const secretkey = "secretkey";
+const secretkey = "SECRET";
 
 Controller.get_auth = function(req,res){
 	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py","SECRETKEYBASED32"]);
+	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py","SECRETBASED32"]);
 	pythonProcess.stdout.on('data',(passwd) => {
 		if(req.body.passwd.toString() == JSON.parse(passwd)){
 			jwt.sign({passwd},secretkey,{expiresIn:'5m'},(err,token) => {
 			console.log(token);
-			res.json({token:token});	
+			res.cookie('acces_token',token,{HttpOnly:true});
+			//res.json({token:token});	
+				res.sendStatus(200);
 			});
 		}
 		else{
@@ -22,11 +24,9 @@ Controller.get_auth = function(req,res){
 
 };
 function verifyToken(req,res){
-	const bearer = req.headers['authorization'];
+	const bearer = req.cookies['acces_token'];
 	if(typeof bearer !== 'undifined' && bearer != null){
-		const bearerToken = bearer.split(' ')[2];
-		req.token = bearerToken;	
-		return (jwt.verify(req.token,secretkey,(err,data) => {
+		return (jwt.verify(bearer,secretkey,(err,data) => {
 			if(err){
 				return false;
 			}
@@ -44,12 +44,11 @@ var resultat = function(res,err,stat,msg){
 		res.send(err);
 	}
 	else{
-		console.log(msg);
+		//console.log(msg);
 		res.status(stat);
 		res.send(msg)
 	}
 };
-
 Controller.place_a_file = function(req,res) {
 	if(verifyToken(req,res)){
 		Drive.uploadfile(req,res,resultat);
