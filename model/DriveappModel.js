@@ -6,7 +6,6 @@ var drive = {};
 drive.uploadfile = function(new_file,res,result){
 	var form = new formidable.IncomingForm();
 	form.parse(new_file,(err,fields,files) =>{
-		console.log("bonjour");
 		if(err){
 			console.log(err);
 		}
@@ -14,7 +13,7 @@ drive.uploadfile = function(new_file,res,result){
 	});
 	form.on('fileBegin',function(name,file){
 		console.log(file.name);
-		file.path = "file/" + file.name;
+		file.path = path.join(__dirname, "../file", file.name);
 		 
 	});
 	form.on('file',function(name,file){
