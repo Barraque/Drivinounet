@@ -55,52 +55,82 @@ Controller.place_a_file = function(req,res) {
 		Drive.uploadfile(req,res,resultat);
 	}
 	else {
-		res.sendStatus(403);
+		res.sendStatus(400);
 	}
 };
 Controller.get_files = function(req,res){
-	if(verifyToken(req,res) && req.body.path != null){
-		Drive.getlistoffiles(req.body.path,res,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.path != null){
+			Drive.getlistoffiles(req.body.path,res,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
 	}	
 };
 Controller.get_a_file = function(req,res){
-	if(verifyToken(req,res)&& req.body.path != null){
-		Drive.getafile(res,req.body.path,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.path != null){
+			Drive.getafile(res,req.body.path,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
 	}	
 };
 Controller.delete_a_file = function(req,res){
-	if(verifyToken(req,res)&& req.body.path != null){
-		Drive.deleteafile(req.body.path,res,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.path != null){
+			Drive.deleteafile(req.body.path,res,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
 	}	
 };
 Controller.mv_a_file = function(req,res){
-	if(verifyToken(req,res) && req.body.old != null && req.body.new != null){
-		Drive.moveafile(req.body.old,req.body.new,res,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.old != null && req.body.new != null){
+			Drive.moveafile(req.body.old,req.body.new,res,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
 	}	
 };
 Controller.get_a_tar = function(req,res){
-	if(verifyToken(req,res) && req.body.path != null){
-		Drive.gettar(req.body.path,res,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.path != null){
+			Drive.gettar(req.body.path,res,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
 	}	
 };
 Controller.create_a_dir = function(req,res){
-	if(verifyToken(req,res) && req.body.path != null){
-		Drive.createdir(req.body.path,res,resultat);
+	if(verifyToken(req,res)){
+		if(req.body.path != null){
+			Drive.createdir(req.body.path,res,resultat);
+		}
+		else{
+			res.sendStatus(400);
+		}
 	}
 	else{
 		res.sendStatus(403);
