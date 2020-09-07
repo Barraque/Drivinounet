@@ -4,10 +4,12 @@
   "description": "My drive",
   "main": "drivinounet.js",
   "dependencies": {
+    "archiver": "^5.0.0",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "express-easy-zip": "^1.1.5",
     "formidable": "^1.2.2",
     "fs": "^0.0.1-security",
     "helmet": "^3.21.2",

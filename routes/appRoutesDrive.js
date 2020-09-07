@@ -23,4 +23,7 @@ app.put('/drivinounet/mkdir',function(req,res){
 app.post('/drivinounet/mv',function(req,res){
 		todoList.mv_a_file(req,res);	
 	});
+app.post('/drivinounet/getTar',function(req,res){
+		todoList.get_a_tar(req,res);	
+	});
 }

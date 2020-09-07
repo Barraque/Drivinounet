@@ -147,4 +147,23 @@ drive.moveafile = function(oldpath,newpath,res,result){
 		result(res,"Le fichier "+oldpath+" n'exsite pas",400,null);
 	}
 };
+drive.gettar = function(newpath,res,result){
+
+	var filePath = path.join(__dirname,".." ,"/file/",newpath);
+
+	if(fs.existsSync(filePath) && fs.lstatSync(filePath).isDirectory()){
+		res.zip({
+			files:[{
+				path:filePath,
+				name:"target"
+			}],
+			filename:"target.zip"
+		});
+	}
+	else{
+		console.log("Le dossier "+newpath+" n'exsite pas");
+		result(res,"Le dossier "+newpath+" n'exsite pas",400,null);
+	}
+
+};
 module.exports = drive;
