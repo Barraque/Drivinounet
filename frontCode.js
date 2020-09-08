@@ -23,7 +23,6 @@ function getfile(name){
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', "https://yourdomain.com/drivinounet/file", true);
 	xhr.setRequestHeader("Content-type","application/json");
-	xhr.setRequestHeader("authorization", "Bearer Bearer "+document.cookie.split('=')[1]);
 	xhr.responseType = 'blob';
 	//xhr.responseType = 'arraybuffer';
 	xhr.onload = function () {
@@ -43,7 +42,6 @@ function gettar(){
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', "https://yourdomain.com/drivinounet/gettar", true);
 	xhr.setRequestHeader("Content-type","application/json");
-	xhr.setRequestHeader("authorization", "Bearer Bearer "+document.cookie.split('=')[1]);
 	xhr.responseType = 'blob';
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status === 200) {
@@ -65,7 +63,6 @@ function getlist(){
 	req.responseType = 'json';
 	req.open("POST","https://yourdomain.com/drivinounet/liste");
 	req.setRequestHeader("Content-type","application/json");
-	req.setRequestHeader("authorization", "Bearer Bearer "+document.cookie.split('=')[1]);
 	req.onload = function(){
 		if(req.readyState == 4 && req.status == 200){
 			var jsson = req.response;
@@ -122,7 +119,7 @@ function sendpassword(){
 			//document.cookie='access_token ='+req.response[Object.keys(req.response)[0]];
 			getlist();
 		}
-		else if (req.stringify =403) alert("Bad password");
+		else if (req.stringify == 403) alert("Bad password");
 	}
 	req.send(JSON.stringify({"passwd":document.getElementById("passwd").value}));
 

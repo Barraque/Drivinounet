@@ -11,7 +11,7 @@ Controller.get_auth = function(req,res){
 		if(req.body.passwd.toString() == JSON.parse(passwd)){
 			jwt.sign({passwd},secretkey,{expiresIn:'20m'},(err,token) => {
 			console.log(token);
-			res.cookie('acces_token',token,{HttpOnly:true});
+			res.cookie('acces_token',token,{httpOnly:true});
 			//res.json({token:token});	
 				res.sendStatus(200);
 			});
