@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="drive.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<label >Passwd:</label>
+		<input type="text" name="passwd" id="passwd">
+		<input value="Get token" type="submit" onclick="sendpassword()">
+		<br>
+		<br>
+		<div id="ici">
+		</div>
+		<input value="Generate" type="submit" onclick="getlist()">
+		<input value=".." type="submit" onclick="back()">
+		<input id="dossier" type="text">
+		<input value="MKDIR" type="submit" onclick="mkdir()">
+		<label id="currentpath">Path: "."</label>
+		<input value="get zip" type="submit" onclick="gettar()">
+		<br>
+		<br>
+		<form id="data" method="post" enctype="multipart/form-data">
+			<input name="image" type="file" />
+			<button>Submit</button>
+		</form>
+		<br>
+		<div id="truc"></div>    
+
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+
+		<script>
+			$("form#data").submit(function(e) {
+				e.preventDefault();    
+				sendfile(this);
+			});
+
+var path =".";
+var origine=".";
+var destination = ".";
+window.onload = getlist;
+		</script>
+	</body>
+</html>
+
