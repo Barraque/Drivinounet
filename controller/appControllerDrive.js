@@ -2,11 +2,11 @@
 var Drive = require('../model/DriveappModel.js');
 var jwt = require('jsonwebtoken');
 var Controller = {};
-const secretkey = "secretkey";
+const secretkey = process.env.SECRETKEYTOKEN || "secrettoken";
 
 Controller.get_auth = function(req,res){
 	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py","SECRETKEYBASED32"]);
+	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py", process.env.SECRETKEYTOTP || "SECRETKEYBASED32"]);
 	pythonProcess.stdout.on('data',(passwd) => {
 		if(req.body.passwd.toString() == JSON.parse(passwd)){
 			jwt.sign({passwd},secretkey,{expiresIn:'20m'},(err,token) => {
