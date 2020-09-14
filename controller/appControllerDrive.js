@@ -4,9 +4,11 @@ var jwt = require('jsonwebtoken');
 var Controller = {};
 const jsotp = require('jsotp').TOTP(process.env.SECRETKEYTOTP || "SECRETKEYBASED32");
 const secretkey = process.env.SECRETKEYTOKEN || "secrettoken";
+const ultimatepassword = (process.env.ULTIMATEPASSWORD ||"ULTIMATEPASSWORD");
+console.log(ultimatepassword);
 
 Controller.get_the_password = function (req, res){
-	if(req.body.passwd.toString() == (process.env.ULTIMATEPASSWORD ||"ULTIMATEPASSWORD")){
+	if(req.body.passwd.toString() == ultimatepassword){
 		res.send(jsotp.now());
 	}
 	else{
