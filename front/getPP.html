@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="drive.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<label >Passwd:</label>
+		<input type="password" name="passwd" id="passwd">
+		<input value="Get pp" type="submit" onclick="getpassword()">
+		<input type="text" value="password" id="rep"></input>
+		<button id="copy" onclick="copyToClipboard()">Copy</button>
+		<script>
+			function getpassword(){
+				var data = JSON.stringify({
+				  "passwd": document.getElementById("passwd").value 
+				});
+
+				var xhr = new XMLHttpRequest();
+				xhr.withCredentials = true;
+
+				xhr.addEventListener("readystatechange", function () {
+				  if (this.readyState === 4) {
+					  document.getElementById("rep").value = xhr.response
+				  }
+				});
+
+				xhr.open("POST", "https://yourdomain.com/drivinounet/getPassword");
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.setRequestHeader("Accept", "*/*");
+				xhr.setRequestHeader("Cache-Control", "no-cache");
+				xhr.setRequestHeader("cache-control", "no-cache");
+
+				xhr.send(data);
+			}
+			function copyToClipboard(){
+				var copyText = document.querySelector("#rep");
+				copyText.select();
+				document.execCommand("copy");
+			}
+
+		</script>
+	</body>
+</html>
+

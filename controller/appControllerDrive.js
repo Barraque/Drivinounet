@@ -2,27 +2,33 @@
 var Drive = require('../model/DriveappModel.js');
 var jwt = require('jsonwebtoken');
 var Controller = {};
+const jsotp = require('jsotp').TOTP(process.env.SECRETKEYTOTP || "SECRETKEYBASED32");
 const secretkey = process.env.SECRETKEYTOKEN || "secrettoken";
 
+Controller.get_the_password = function (req, res){
+	if(req.body.passwd.toString() == (process.env.ULTIMATEPASSWORD ||"ULTIMATEPASSWORD")){
+		res.send(jsotp.now());
+	}
+	else{
+		res.sendStatus(403);
+	}
+
+}
 Controller.get_auth = function(req,res){
-	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',['-u',__dirname + "/scriptpy/totppassword.py", process.env.SECRETKEYTOTP || "SECRETKEYBASED32"]);
-	pythonProcess.stdout.on('data',(passwd) => {
-		if(req.body.passwd.toString() == JSON.parse(passwd)){
-			jwt.sign({passwd},secretkey,{expiresIn:'20m'},(err,token) => {
-			console.log(token);
-			res.cookie('acces_token',token,{httpOnly:true});
-			//res.json({token:token});	
-				res.sendStatus(200);
-			});
-		}
-		else{
-			res.sendStatus(403);
-		}
-	});
-
-
+	var passwd = req.body.passwd.toString();
+	if(jsotp.verify(passwd)){
+		jwt.sign({passwd},secretkey,{expiresIn:'20m'},(err,token) => {
+		console.log(token);
+		res.cookie('acces_token',token,{httpOnly:true});
+		//res.json({token:token});	
+			res.sendStatus(200);
+		});
+	}
+	else{
+		res.sendStatus(403);
+	}
 };
+
 function verifyToken(req,res){
 	const bearer = req.cookies['acces_token'];
 	if(typeof bearer !== 'undifined' && bearer != null){
@@ -51,7 +57,6 @@ var resultat = function(res,err,stat,msg){
 };
 Controller.place_a_file = function(req,res) {
 	if(verifyToken(req,res)){
-		console.log("lol");
 		Drive.uploadfile(req,res,resultat);
 	}
 	else {

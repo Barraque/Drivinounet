@@ -15,6 +15,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
+    "jsotp": "^1.0.4",
     "path": "^0.12.7"
   },
   "devDependencies": {},

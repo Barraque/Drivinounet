@@ -26,4 +26,7 @@ app.post('/drivinounet/mv',function(req,res){
 app.post('/drivinounet/getTar',function(req,res){
 		todoList.get_a_tar(req,res);	
 	});
+app.post('/drivinounet/getPassword',function(req,res){
+		todoList.get_the_password(req,res);	
+	});
 }

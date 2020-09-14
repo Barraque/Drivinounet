@@ -19,6 +19,7 @@ Also you need to copy the front code javascript and the basic html page in your 
 ```shell
 # cp front/* /var/www/html/ 
 ```
+Now you can use the different "GUI" on your browser.
 ## Usage
 
 ```shell
